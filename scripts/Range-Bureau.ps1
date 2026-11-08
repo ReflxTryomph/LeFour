@@ -63,7 +63,11 @@ namespace LeFourDesk {
     void SelectItem(int iItem, uint dwFlags);
     void SelectAndPositionItems(uint cidl, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, [MarshalAs(UnmanagedType.LPArray)] POINT[] apt, uint dwFlags);
     void SetGroupBy(IntPtr key, int fAscending);
-    void GetPropertyItem(int iItem, IntPtr propkey, IntPtr ppropvar);
+    void GetGroupBy(IntPtr pkey, IntPtr pfAscending);
+    void SetViewProperty(IntPtr pidl, IntPtr propkey, IntPtr propvar);
+    void GetViewProperty(IntPtr pidl, IntPtr propkey, IntPtr ppropvar);
+    void SetTileViewProperties(IntPtr pidl, IntPtr pszPropList);
+    void SetExtendedTileViewProperties(IntPtr pidl, IntPtr pszPropList);
     void SetText(int iType, IntPtr pwszText);
     void SetCurrentFolderFlags(uint dwMask, uint dwFlags);
     void GetCurrentFolderFlags(out uint pdwFlags);
@@ -144,7 +148,7 @@ if (-not ('LeFourDesk.Desk' -as [type])) { Add-Type -TypeDefinition $code }
 [LeFourDesk.Desk]::SetProcessDPIAware() | Out-Null
 Add-Type -AssemblyName System.Windows.Forms
 $desk = New-Object LeFourDesk.Desk
-$desk.NoAutoArrange()
+try { $desk.NoAutoArrange() } catch { Write-Host 'Desactive toi-meme : clic droit sur le Bureau > Affichage > decoche Organisation automatique, puis relance.' -ForegroundColor Yellow }
 
 # 3. Classement
 $launchers = '^(Steam|Epic Games( Launcher)?|Rockstar Games Launcher|Ubisoft Connect|Riot Client|Battle\.net|EA( app)?|Xbox|GOG Galaxy)$'
