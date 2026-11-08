@@ -21,10 +21,10 @@ function Copie($src, $dst) {
     if ($LASTEXITCODE -ge 8) { Write-Host "  ERREUR copie $src" -ForegroundColor Red } else { Ok "$src -> $dst" }
 }
 $wg = [bool](Get-Command winget -ErrorAction SilentlyContinue)
-function Winget($id, $nom, $src = 'winget') {
+function Installe($id, $nom, $src = 'winget') {
     if (-not $wg) { Write-Host "  winget absent, installe $nom a la main" -ForegroundColor Yellow; return }
     Write-Host "  Installation : $nom"
-    winget install --id $id -e --source $src --accept-source-agreements --accept-package-agreements --silent
+    winget.exe install --id $id -e --source $src --accept-source-agreements --accept-package-agreements --silent
 }
 
 # 1. Photos : Photos\Images doit aller directement dans Images (pas Images\Images)
@@ -63,13 +63,13 @@ if (Oui 'As-tu deja lance Fortnite une fois sur ce Windows (puis ferme) ?') {
 
 # 5. Logiciels qui n'etaient pas dans Setups
 Step 'Logiciels'
-Winget 'Git.Git'                    'Git'
-Winget 'GitHub.cli'                 'GitHub CLI'
-Winget 'Microsoft.VisualStudioCode' 'VS Code'
-Winget 'OpenJS.NodeJS.LTS'          'Node.js'
-Winget 'OBSProject.OBSStudio'       'OBS'
-if (Oui 'Installer Medal ?')        { Winget 'Medal.TV' 'Medal' }
-Winget '9NT1R1C2HH7J'               'ChatGPT' 'msstore'
+Installe 'Git.Git'                    'Git'
+Installe 'GitHub.cli'                 'GitHub CLI'
+Installe 'Microsoft.VisualStudioCode' 'VS Code'
+Installe 'OpenJS.NodeJS.LTS'          'Node.js'
+Installe 'OBSProject.OBSStudio'       'OBS'
+if (Oui 'Installer Medal ?')        { Installe 'Medal.TV' 'Medal' }
+Installe '9NT1R1C2HH7J'               'ChatGPT' 'msstore'
 $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
 if (Get-Command npm -ErrorAction SilentlyContinue) { npm install -g @openai/codex; Ok 'Codex (CLI)' }
 
